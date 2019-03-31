@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册</title>
+    <script src="/static/assets/js/fontSize.js"></script>
+    <link rel="stylesheet" href="/static/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?123">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+</head>
+<body>
+<div class="logo">
+    <img src="/static/assets/img/logo.png" alt="">
+</div>
+<form action="">
+    <div class="input_box">
+        <div class="iconfont icon-geren11"></div>
+        <input type="text" placeholder="请输入您的姓名" id="user_name" name="">
+    </div>
+    <div class="input_box">
+        <div class="iconfont icon-shouji54"></div>
+        <input type="number" placeholder="请输入您的手机号" id='tel' name="" maxlength="11">
+        <span id="getcode">获取验证码</span>
+    </div>
+    <div class="input_box">
+        <div class="iconfont icon-yanzhengyanzhengma"></div>
+        <input type="number" placeholder="请输入您的验证码" id="code" name="" maxlength="6">
+    </div>
+    <button class="sub_btn" type="button">提交</button>
+</form>
+</body>
+</html>
+<script src="/static/assets/js/jquery-2.1.0.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
+<script src="/static/assets/js/jquery-weui.min.js"></script>
+<script src="/static/assets/js/common.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var countdown = 60, isclick = true, submit = true;
+
+        //倒计时
+        function settime() {
+            if (countdown == 0) {
+                $('#getcode').text("获取验证码");
+                countdown = 60;
+                isclick = true;
+                return false;
+            } else {
+                $('#getcode').text("重新发送(" + countdown + ")");
+                countdown--;
+            }
+            setTimeout(function () {
+                settime();
+            }, 1000);
+        }
+
+        $('#getcode').click(function () {
+            var tel = $('#tel').val();
+            if (isclick == true) {
+                isclick = false;
+                if (!telReg.test(tel)) {
+                    $.toast('请输入正确的手机号', 'cancel');
+                    isclick = true;
+                    return;
+                }
+
+                $.ajax({
+                    url: "{:url('Index/sendSms')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {tel: tel},
+                    success: function (data) {
+                        if (data.code == 1) {
+                            settime();
+                        } else {
+                            $.toast(data.data, 'cancel');
+                            isclick = true;
+                        }
+                    },
+                    error: function (data) {
+                        alert('系统异常,请联系管理员');
+                        isclick = true;
+                    }
+
+                })
+            }
+
+        })
+
+        //注册
+        $('.sub_btn').click(function () {
+            var user_name = $('#user_name').val(),
+                tel = $('#tel').val(),
+                code = $('#code').val();
+            if (user_name == '') {
+                $.toast('请输入姓名', "cancel");
+                return;
+            } else if (!telReg.test(tel)) {
+                $.toast('请输入正确的手机号', 'cancel');
+                return;
+            } else if (code == '') {
+                $.toast('验证码不能为空', 'cancel');
+                return;
+            }
+            if (submit == true) {
+                submit = false;
+                $.ajax({
+                    url: "{:url('Index/regPost')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {realname: user_name, tel: tel, code: code},
+                    success: function (data) {
+                        if (data.code == 1) {
+                            // alert('注册成功');
+                            $.toast('注册成功')
+                            setTimeout(function () {
+                                window.location.href = "http://<?php echo $_SERVER['HTTP_HOST'];?>/home";
+                            }, 1500);
+                        } else {
+                            $.toast(data.data, 'cancel');
+                            submit = true;
+                        }
+                    },
+                    error: function (data) {
+                        $.toast('系统异常,请联系管理员', 'cancel');
+                        // alert('系统异常,请联系管理员');
+                        submit = true;
+                    }
+                })
+            }
+
+        })
+    })
+</script>

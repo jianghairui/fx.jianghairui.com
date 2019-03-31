@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>红尾巴AI英语</title>
+    <script src="/static/assets/js/fontSize.js"></script>
+    <link rel="stylesheet" href="/static/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?123">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont2.css">
+</head>
+<body class="index_body">
+<div class="index_top">
+    <div class="head_img_box">
+        <div class="head_img"><img src="{$user.avatar}" alt=""></div>
+        <div class="head_right">
+            <div class="name">{$user.nickname}</div>
+            <span>{$user.tel}</span>
+        </div>
+    </div>
+</div>
+<div class="sale_box">
+    <div class="sales">
+        <span class="iconfont icon-wuxiaoliangshangpin-"></span>
+        <span>订单总量：{$achieve}</span>
+    </div>
+    <div class="code_box" onclick="javascript:window.location.href='{:url('Index/code')}';">
+        <div class="code_img">
+            <img src="/static/assets/img/code.png" alt="">
+        </div>
+        <div class="code">{$user.code}</div>
+    </div>
+</div>
+<div>
+
+    <a href="{:url('Index/order')}" class="href_item">
+        <div class="icon_box">
+            <span class="iconfont icon-xiadan"></span>
+            <span>下单</span>
+        </div>
+        <div class="iconfont icon-xiangyou"></div>
+    </a>
+    <a href="{:url('Index/achievement')}" class="href_item">
+        <div class="icon_box">
+            <span class="iconfont icon-wodeyeji"></span>
+            <span>已出货</span>
+        </div>
+        <div class="iconfont icon-xiangyou"></div>
+    </a>
+    <a href="{:url('Index/stock')}" class="href_item">
+        <div class="icon_box">
+            <span class="iconfont icon-ERP_yujicangku"></span>
+            <span>我的仓库</span>
+        </div>
+        <div class="iconfont icon-xiangyou"></div>
+    </a>
+    <a href="{:url('Index/orderlist')}" class="href_item">
+        <div class="icon_box">
+            <span class="iconfont icon-dingdan"></span>
+            <span>我的订单</span>
+        </div>
+        <div class="iconfont icon-xiangyou"></div>
+    </a>
+    <a href="{:url('Index/topay')}" class="href_item">
+        <div class="icon_box">
+            <span class="iconfont icon-weixinzhifu"></span>
+            <span>扫码支付</span>
+        </div>
+        <div class="iconfont icon-xiangyou"></div>
+    </a>
+</div>
+</body>
+</html>
+<script src="/static/assets/js/jquery-2.1.0.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
+<script src="/static/assets/js/jquery-weui.min.js"></script>
+<script src="/static/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    })
+</script>
+

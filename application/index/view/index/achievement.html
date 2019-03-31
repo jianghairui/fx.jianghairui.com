@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>已出货</title>
+    <script src="/static/assets/js/fontSize.js"></script>
+    <link rel="stylesheet" href="/static/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?123">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+    <style>
+        .order_label, .order_input {
+            color: #666;
+        }
+    </style>
+</head>
+<body class="ache_box">
+<div class="order_item ache">
+    <div class="order_label">
+        已出货数量
+    </div>
+    <!--<div class="order_input">{$achieve}</div>-->
+    <div class="order_input"><span>{$achieve}</span><span class="icon_boxs"><span
+            class="iconfont icon-arrow-down"></span></span>
+    </div>
+</div>
+{if empty($list)}
+<div class="noorder">
+    <img src="/static/assets/img/noachiev.png" alt="">
+</div>
+{/if}
+<div class="order_list">
+    {foreach $list as $li}
+    <div class="order_item">
+        <div class="order_label">
+            {$li.realname}的总销量
+        </div>
+        <div class="order_input">{$li['order']+$li['stock']}</div>
+    </div>
+    {/foreach}
+</div>
+
+</body>
+</html>
+<script src="/static/assets/js/jquery-2.1.0.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
+<script src="/static/assets/js/jquery-weui.min.js"></script>
+<script src="/static/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.ache').click(function () {
+            $('.order_list').slideToggle(200);
+            if ($('.iconfont').hasClass('icon-xiangyou')) {
+                $('.iconfont ').addClass('icon-arrow-down').removeClass('icon-xiangyou')
+            } else {
+                $('.iconfont ').addClass('icon-xiangyou').removeClass('icon-arrow-down')
+            }
+        })
+    })
+</script>

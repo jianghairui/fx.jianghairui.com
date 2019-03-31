@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>下单</title>
+    <script src="/static/assets/js/fontSize.js"></script>
+    <link rel="stylesheet" href="/static/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?123">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+</head>
+<body class="order">
+<form action="">
+    <div class="order_item">
+        <div class="order_label">
+            <span class="iconfont icon-kehu"></span><span>客户姓名</span>
+        </div>
+        <div class="order_input"><input type="text" placeholder="请输入客户姓名" id="name"></div>
+    </div>
+    <div class="order_item">
+        <div class="order_label">
+            <span class="iconfont icon-dianhua"></span><span>电话</span>
+        </div>
+        <div class="order_input"><input type="text" placeholder="请输入客户电话" id="tel"></div>
+    </div>
+    <div class="order_item">
+        <div class="order_label">
+            <span class="iconfont icon-dizhi"></span><span>收货地址</span>
+        </div>
+        <div class="order_input"><input type="text" placeholder="请输入收货地址" id="address"></div>
+    </div>
+    <div class="order_item">
+        <div class="order_label">
+            <span class="iconfont icon-shuliangbang"></span><span>数量</span>
+        </div>
+        <div class="order_input_num">
+            <span class="iconfont icon-reduce_bd" id="reduce"></span>
+            <input type="number" placeholder="" id="num" value="1">
+            <span class="iconfont icon-jia" id="plus"></span>
+        </div>
+    </div>
+    <div class="btn_box" id="btn">
+        <button type="button">确认提交</button>
+    </div>
+</form>
+</body>
+</html>
+<script src="/static/assets/js/jquery-2.1.0.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
+<script src="/static/assets/js/jquery-weui.min.js"></script>
+<script src="/static/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var submit = true;
+        // 确认订单
+        $('#btn').click(function () {
+            var name = $('#name').val(),
+                tel = $('#tel').val(),
+                address = $('#address').val(),
+                num = $('#num').val();
+            if (name == '') {
+                $.toast('请输入客户姓名', 'cancel');
+                return;
+            } else if (!telReg.test(tel)) {
+                $.toast('手机号不正确', 'cancel');
+                return;
+            } else if (address == '') {
+                $.toast('地址不能为空', 'cancel');
+                return;
+            } else if (num < 1) {
+                $.toast('数量不能小于1', 'cancel');
+                return;
+            }
+            if (submit == true) {
+                submit = false;
+                $.ajax({
+                    url: "{:url('Index/orderPost')}",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {name: name, tel: tel, address: address, num: num},
+                    success: function (data) {
+                        if (data.code == 1) {
+                            $.toast('已下单');
+                            // alert('已下单')
+                            setTimeout(function () {
+                                window.location.href = "http://<?php echo $_SERVER['HTTP_HOST'];?>/home";
+                            }, 2000)
+                        } else if(data.code == -2) {
+                            $.toast('权限不足');
+                            setTimeout(function () {
+                                submit = true;
+                                window.location.href = "{:url('Index/notice')}";
+                            }, 1000)
+                        } else {
+                            $.toast(data.data, 'warning');
+                            // alert(data.data);
+                            submit = true;
+                        }
+                    },
+                    error: function (data) {
+                        $.toast('系统异常,请联系管理员', 'warning');
+                        // alert('系统异常,请联系管理员');
+                        submit = true;
+                    }
+                })
+            }
+
+        })
+        // 监听输入框
+        $("#num").bind("input propertychange", function (event) {
+            var num = $(this).val();
+            // if (!numReg.test(num)) {
+            //     $(this).val('1')
+            // }
+            if (num <= 1) {
+                $('.icon-reduce_bd').removeClass('active_icon')
+            } else {
+                $('.icon-reduce_bd').addClass('active_icon')
+            }
+        });
+        // 增加
+        $('#plus').click(function () {
+            var n = $(this).prev().val();
+            var num = parseInt(n) + 1;
+            if (num == 0) {
+                $('.icon-reduce_bd').removeClass('active_icon');
+            } else {
+                $('.icon-reduce_bd').addClass('active_icon');
+                $(this).prev().val(num);
+            }
+        });
+        // 减少
+        $('#reduce').click(function () {
+            var n = $(this).next().val();
+            var num = parseInt(n) - 1;
+            if (num == 0) {
+                $('.icon-reduce_bd').removeClass('active_icon')
+            } else {
+                $('.icon-reduce_bd').addClass('active_icon')
+                $(this).next().val(num);
+            }
+
+        })
+    })
+</script>

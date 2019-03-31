@@ -1,0 +1,198 @@
+<style>
+    span.price {color:blue;font-weight: bold}
+</style>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 业务管理 <span class="c-gray en">&gt;</span> 订单列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div id="formAjax" class="text-c">
+        <button onclick="removeIframe()" class="btn btn-primary radius">关闭选项卡</button>
+        <span class="select-box inline">
+		<select name="status" id="status" class="select">
+			<option value="">全部</option>
+			<option value="0" {if $status === "0"}selected{/if}>待确认</option>
+            <option value="1" {if $status === "1"}selected{/if}>已确认</option>
+            <option value="2" {if $status === "2"}selected{/if}>已完成</option>
+		</select>
+		</span> 日期范围：
+        <input type="text" onfocus="WdatePicker({ maxDate:'#F{ $dp.$D(\'logmax\')||\'%y-%M-%d\' }' })" value="{$Think.get.logmin}" id="logmin" class="input-text Wdate" style="width:120px;">
+        -
+        <input type="text" onfocus="WdatePicker({ minDate:'#F{ $dp.$D(\'logmin\') }' })" value="{$Think.get.logmax}" id="logmax" class="input-text Wdate" style="width:120px;">
+        <input type="text" name="search" value="{$Think.get.search}" id="search" placeholder=" 输入查找信息" style="width:250px" class="input-text">
+        <button name="" id="search-btn" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 查找订单</button>
+    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="l">
+
+        </span>
+        <span class="r">共有数据：<strong>{$page.count}</strong> 条</span> </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort table-responsive">
+            <thead>
+            <tr class="text-c">
+                <th width="150">单号</th>
+                <th width="80">经销商代码</th>
+                <th width="80">经销商姓名</th>
+                <th width="80">根经销商代码</th>
+                <th width="60">总数量</th>
+                <th width="50">差额数量</th>
+                <th width="50">代理商库存</th>
+                <th width="90">金额</th>
+                <th width="80">客户姓名</th>
+                <th width="100">手机号</th>
+                <th width="120">下单时间</th>
+                <th width="200">收货地址</th>
+                <th width="75">状态</th>
+                <th width="60">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <form id="multi-check">
+                {foreach $list as $li}
+                <tr class="text-c">
+                    <td>{$li.order}</td>
+                    <td>{$li.code}</td>
+                    <td>{$li.realname}</td>
+                    <td>{$li.top_code}</td>
+                    <td>{$li.num}</td>
+                    <td>{$li.short_num}</td>
+                    <td>{$li.stock_num}</td>
+                    <td class="text-c"><span class="price">￥：{$li.price}</span></td>
+                    <td class="text-c">{$li.name}</td>
+                    <td class="text-c">{$li.tel}</td>
+                    <td class="text-c">{$li.create_time|date="Y-m-d H:i"}</td>
+                    <td>{$li.address}</td>
+                    <td class="td-status">
+                        {switch $li['status']}
+                        {case 0}
+                        <span class="label label-default radius">待确认</span>
+                        {/case}
+                        {case 1}
+                        <span class="label label-warning radius">已确认</span>
+                        {/case}
+                        {case 2}
+                        <span class="label label-success radius">已完成</span>
+                        {/case}
+                        {default /}
+                        <input type="text" class="input-text" value="其他" placeholder=""  disabled>
+                        {/switch}
+                    </td>
+                    <td>
+                        {if $li['status'] == '0'}
+                        <a class="btn btn-link radius" style="text-decoration:none;" onClick="req_shenhe(this,{$li.id})" href="javascript:;" title="审核">审核</a>
+                        {else /}
+                        <span class="btn btn-link radius"></span>
+                        {/if}
+                    </td>
+                </tr>
+                {/foreach}
+            </form>
+
+
+            <tr class="text-r">
+                <td colspan="13" id="page">
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="/lib/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+
+    var url = '{:url("Op/orderlist")}' + '?<?php echo $page["query"];?>';
+    var curr = '{$page.curr}';
+    laypage({
+        cont: 'page', //容器。值支持id名、原生dom对象，jquery对象。
+        pages: '{$page.totalPage}', //通过后台拿到的总页数
+        skip: false, //是否开启跳页
+        skin: '#5a98de',
+        curr: curr || 1, //当前页
+        jump: function(obj, first){ //触发分页后的回调
+            // console.log(obj)
+            if(!first) {
+                window.location.href = url+'&page=' + obj.curr;
+            }
+        }
+    });
+
+    $("#search-btn").click(function () {
+        var status = $("#formAjax").find("#status").val()
+        var logmin = $("#formAjax").find("#logmin").val()
+        var logmax = $("#formAjax").find("#logmax").val()
+        var search = $("#formAjax").find("#search").val()
+        var str = ''
+        if(status.length != '') {
+            str += '&status=' + status
+        }
+        if(logmin.length != '') {
+            str += '&logmin=' + logmin
+        }
+        if(logmax.length != '') {
+            str += '&logmax=' + logmax
+        }
+        if(search.length != '') {
+            str += '&search=' + search
+        }
+        window.location.href = '{:url("Op/orderlist")}' + '?' + str;
+    });
+
+    /*需求审核*/
+    function req_shenhe(obj,id){
+        layer.confirm('审核需求？', {
+                btn: ['通过','不通过','取消'],
+                shade: false,
+                closeBtn: 0
+            },
+            function(){
+                $.ajax({
+                    url:"{:url('Op/orderPass')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{id:id},
+                    success:function(data) {
+                        console.log(data)
+                        if(data.code == 1) {
+                            $(obj).parents("tr").find(".td-status").html('<span class="label label-warning radius">已确认</span>');
+                            $(obj).parent().html('<span class="btn btn-link radius"></span>');
+                            layer.msg('已通过', {icon:1,time:1000});
+                        }else {
+                            layer.msg(data.data,{icon:2,time:1000})
+                        }
+                    },
+                    error:function(data) {
+                        layer.msg('请求失败!',{icon:5,time:1000})
+                    },
+                })
+
+            },
+            function(){
+                $.ajax({
+                    url:"{:url('Op/orderReject')}",
+                    type:'post',
+                    dataType:'json',
+                    data:{id:id},
+                    success:function(data) {
+                        console.log(data)
+                        if(data.code == 1) {
+                            $(obj).parents("tr").remove();
+                            layer.msg('未通过', {icon:5,time:1000});
+                        }else {
+                            layer.msg(data.data,{icon:2,time:1000})
+                        }
+                    },
+                    error:function(data) {
+                        layer.msg('请求失败!',{icon:5,time:1000})
+                    },
+                })
+
+            });
+    }
+
+
+
+
+
+</script>

@@ -1,0 +1,105 @@
+<link href="/lib/lightbox2/2.8.1/css/lightbox.css" rel="stylesheet" type="text/css" >
+<article class="page-container">
+    <form class="form form-horizontal" id="formAjax">
+
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>真实姓名：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$info.realname}" placeholder="" name="realname" >
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机号：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$info.tel}" placeholder="" name="tel" >
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>团队销量：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$info.team}" placeholder="" name="team" >
+                <input type="hidden" name="id" value="{$info.id}">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>购买上限：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <span class="select-box">
+                    <select name="upper_limit" class="select valid" aria-required="true" aria-invalid="false">
+                        {foreach $upper as $up}
+                        <option value="{$up+1}" {if ($up+1) == $info['upper_limit']}selected{/if}>{$up+1}</option>
+                        {/foreach}
+                    </select>
+				</span>
+            </div>
+        </div>
+
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-success radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                <input class="btn btn-primary radius" onclick="layer_close()" type="submit" value="&nbsp;&nbsp;关闭选项卡&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="/lib/lightbox2/2.8.1/js/lightbox.min.js"></script>
+<script type="text/javascript" src="/lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="/lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".portfolio-area li").Huihover();
+
+        var isclick = true;
+        $("#formAjax").validate({
+            rules:{
+                realname:{
+                    required:true,
+                    minlength:2,
+                    maxlength:10
+                },
+                tel:{
+                    isPhone:true,
+                },
+                team:{
+                    number:true,
+                },
+                upper_limit:{
+                    number:true
+                }
+            },
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                if(isclick) {
+                    isclick = false
+                    $(form).ajaxSubmit({
+                        type: 'post',
+                        url: "{:url('User/usermod')}" ,
+                        success: function(data){
+                            console.log(data)
+                            if(data.code == 1) {
+                                layer.msg('保存成功!',{icon:1,time:1000},function(){
+                                    window.parent.location.reload();
+                                });
+                            }else {
+                                layer.msg(data.data,{icon:2,time:1000});
+                                isclick = true
+                            }
+                        },
+                        error: function(XmlHttpRequest, textStatus, errorThrown){
+                            layer.msg('接口请求失败!',{icon:2,time:1000});
+                            isclick = true
+                        }
+                    });
+
+                }
+
+            }
+        });
+
+
+    });
+</script>

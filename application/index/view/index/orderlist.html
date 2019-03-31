@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>我的订单</title>
+    <script src="/static/assets/js/fontSize.js"></script>
+    <link rel="stylesheet" href="/static/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?123">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+</head>
+<body>
+<div class="my_oder_box">
+    <div class="my_oder_nav">
+        <span {if $act=='1'}class="span_active"{/if} onclick="javascript:window.location.href='{:url('Index/orderlist',array('act'=>1))}';">全部</span>
+        <span {if $act=='2'}class="span_active"{/if} onclick="javascript:window.location.href='{:url('Index/orderlist',array('act'=>2))}';">待确认</span>
+        <span {if $act=='3'}class="span_active"{/if} onclick="javascript:window.location.href='{:url('Index/orderlist',array('act'=>3))}';">已确认</span>
+        <span {if $act=='4'}class="span_active"{/if} onclick="javascript:window.location.href='{:url('Index/orderlist',array('act'=>4))}';">已完成</span>
+    </div>
+    <div class="list_box">
+        <!--全部-->
+        <div class="my_oder_list ">
+            {if empty($list)}
+            <div class="noorder">
+                <img src="/static/assets/img/noorder.png" alt="">
+            </div>
+            {/if}
+            {foreach $list as $li}
+            <div class="my_oder_item">
+                <div class="my_oder_name">
+                    <span><b>客户姓名：</b><span>{$li.name}</span></span>
+                    <div>
+                        {if $li['status']=='0'}待确认{/if}
+                        {if $li['status']=='1'}已确认{/if}
+                        {if $li['status']=='2'}已完成{/if}
+                    </div>
+                </div>
+                <div class="my_oder_name">
+                    <span><b>客户电话：</b><span>{$li.tel}</span></span>
+                    <!--<div class="iconfont icon-shanchu"></div>-->
+                </div>
+                <div class="my_oder_name">
+                    <span><b>订单数量：</b><span>{$li.num}</span></span>
+                    <!--<div class="iconfont icon-shanchu"></div>-->
+                </div>
+                <div class="my_oder_name">
+                    <span><b>订单预算：</b><span class="money">￥<span>{$li.price}</span></span></span>
+                    <div>{$li.create_time|date="Y年m月d日 H:i"}</div>
+                </div>
+            </div>
+            {/foreach}
+            <div style="text-align: center">
+                <a style="font-size: 16px;text-decoration: underline" href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/home';?>">返回首页&lt;&lt;</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
+<script src="/static/assets/js/jquery-2.1.0.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
+<script src="/static/assets/js/jquery-weui.min.js"></script>
+<script src="/static/assets/js/common.js"></script>
+<script type="text/javascript">
+
+</script>

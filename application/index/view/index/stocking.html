@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>备货</title>
+    <script src="/static/assets/js/fontSize.js"></script>
+    <link rel="stylesheet" href="/static/assets/css/weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?123">
+    <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+</head>
+<body>
+<div class="ware_box">
+    <div class="ware_item">
+        <div class="ware_code">代理商代码：{$Think.session.code}</div>
+        <div class="ware_code">备货数量</div>
+        <div class="ware_input"><input type="number" placeholder="输入备货数量" id="ware_num"></div>
+        <div class="ware_btn ware_btn2" id="ware2">提交</div>
+    </div>
+</div>
+</body>
+</html>
+<script src="/static/assets/js/jquery-2.1.0.js"></script>
+<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
+<script src="/static/assets/js/jquery-weui.min.js"></script>
+<script src="/static/assets/js/common.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#ware2').click(function () {
+            var ware_num = $('#ware_num').val();
+            if (ware_num < 1) {
+                $.toast('请输入备货数量', 'cancel');
+                return;
+            }
+
+            $.ajax({
+                url:"{:url('Index/stockingPost')}",
+                type:'POST',
+                dataType:'json',
+                data:{num:ware_num},
+                success: function (data) {
+                    if(data.code == 1) {
+                        $.toast('已提交')
+                       setTimeout(function () {
+                           window.location.reload();
+                       },2000)
+                    } else if(data.code == -2) {
+                        $.toast('权限不足')
+                        setTimeout(function () {
+                            submit = true;
+                            window.location.href = "{:url('Index/notice')}";
+                        }, 1000)
+                    } else {
+                        $.toast(data.data,'cancel');
+                        submit = true;
+                    }
+                },
+                error: function (data) {
+                    $.toast('系统异常,请联系管理员','cancel');
+                    submit = true;
+                }
+            })
+
+        })
+    })
+</script>
