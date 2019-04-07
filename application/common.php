@@ -227,8 +227,11 @@ function generateVerify($width,$height,$type,$length,$fontsize) {
             $str = join('',array_rand(array_flip(array_merge(range('a','z'),range('A','Z'),range(0,9))),$length));
             break;
     }
+//    for($i=0;$i<$length;$i++) {
+//        imagettftext($image,$fontsize,mt_rand(-30,30),$i*($width/$length)+5,mt_rand(($height/2)+($fontsize/2),($height/2)+($fontsize/2)),randColor($image),'D:/xampp/htdocs/jianghairui/public/static/src/fonts/PingFang-Regular.ttf',$str[$i]);
+//    }
     for($i=0;$i<$length;$i++) {
-        imagettftext($image,$fontsize,mt_rand(-30,30),$i*($width/$length)+5,mt_rand(($height/2)+($fontsize/2),($height/2)+($fontsize/2)),randColor($image),'D:/xampp/htdocs/jianghairui/public/static/src/fonts/PingFang-Regular.ttf',$str[$i]);
+        imagettftext($image,$fontsize,mt_rand(-30,30),$i*($width/$length)+5,mt_rand(($height/2)+($fontsize/2),($height/2)+($fontsize/2)),randColor($image),'static/src/fonts/PingFang-Regular.ttf',$str[$i]);
     }
     //添加像素点
     for ($i=1;$i<=100;$i++) {

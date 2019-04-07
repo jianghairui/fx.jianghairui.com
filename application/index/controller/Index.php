@@ -331,7 +331,6 @@ class Index extends Common
     //todo
     public function articleDetail() {
         return $this->fetch();
-
     }
 
 
