@@ -324,6 +324,17 @@ class Index extends Common
         $this->assign('act',$act);
         return $this->fetch();
     }
+    //todo
+    public function articleList() {
+        return $this->fetch();
+    }
+    //todo
+    public function articleDetail() {
+        return $this->fetch();
+
+    }
+
+
 
     public function qrcode() {
         include ROOT_PATH . '/extend/phpqrcode/phpqrcode.php';
@@ -392,19 +403,6 @@ class Index extends Common
         header("Location:".$url);exit;
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
