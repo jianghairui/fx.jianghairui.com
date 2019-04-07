@@ -81,7 +81,6 @@ a {
 
 .code {
     font-size: 13px;
-    color: #999;
 }
 
 .code_img {
@@ -105,10 +104,6 @@ a {
     padding: 0.3rem;
     border-bottom: 1px solid #d2d2d2;
     color: #000;
-    background-color: #fff;
-}
-.href_item:last-child{
-    border: 0;
 }
 
 .href_item:active {
@@ -190,7 +185,7 @@ a {
 
 .order_input input {
     text-align: right;
-    font-size: 14px;
+    font-size: 0.26rem;
     width: 100%;
     height: 100%;
 }
@@ -206,7 +201,6 @@ a {
 
 .order_input input::placeholder {
     color: #999999;
-    font-size: 13px;
 }
 
 .order_input_num {
@@ -247,13 +241,12 @@ a {
     background-image: url("../img/order.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    width: 33%;
+    width: 2.5rem;
     text-align: center;
     border: 0;
     padding: 13px 0;
     font-size: 15px;
     color: #fff;
-    display: block;
 }
 
 button:active {
@@ -477,13 +470,12 @@ button:active {
 
 .input_box span {
     border-left: 1px solid #C7C7C7;
-    padding: 10px 8px;
+    padding: 5px 8px;
     color: #c7c7c7;
 }
 
 .input_box .iconfont {
     color: #A5A5A5;
-    font-size: 20px;
 }
 
 input {
@@ -498,12 +490,10 @@ input {
 .input_box input {
     flex: 1;
     padding: 15px 8px;
-    font-size: 14px;
 }
 
 .input_box input::placeholder {
     color: #C7C7C7;
-    font-size: 14px;
 }
 
 .sub_btn {
@@ -559,28 +549,130 @@ input {
     color: #DA3F38;
     font-size: 15px;
 }
-.success_box .icon-zhengpinbaozhangduigou{
+
+.success_box .icon-zhengpinbaozhangduigou {
     font-size: 40px;
     margin-bottom: 15px;
 }
-.codes_box{
-    background-image: url("../img/code_bottom.png");
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    background-position: bottom;
-    min-height: 100vh;
-    padding: 50px 0;
-    background-color: #fff;
-}
-.img_code_box{
+
+.new_top {
+    height: 6.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    font-size: 16px;
-    color: #999;
+    background-image: url("../img/bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
 }
-.img_code_box img{
-    width: 60%;
-    margin-bottom: 10px;
+
+.new_img {
+    width: 74%;
+    margin: 0 auto;
+    height: 5.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
+    background-image: url("../img/code_box.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: .72rem 0 .5rem 0;
+}
+
+.new_img .new_code {
+    /*width: 51%;*/
+    width: 2.83rem;
+    height: 2.83rem;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.new_img .new_code img {
+    width: 100%;
+}
+
+.new_img .new_text {
+    background: #D93D36;
+    box-shadow: 0px 0px 14px 4px rgba(246, 97, 87, 0.33);
+    border-radius: .3rem;
+    padding: .1rem 0;
+    text-align: center;
+    width: 51%;
+    font-size: 12px;
+    color: #fff;
+}
+
+.new_list {
+    background-color: #fff;
+    margin: .3rem 0;
+}
+
+.new_title {
+    font-size: 14px;
+    padding: .22rem .25rem;
+}
+
+.new_item {
+    display: flex;
+    align-items: center;
+    padding: .31rem .24rem;
+    border-bottom: 1px solid #F3F5F7;
+}
+
+.new_item .new_imgs {
+    width: 32.4%;
+    flex-shrink: 0;
+    /*height: 1.35rem;*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: .24rem;
+
+}
+
+.new_item .new_imgs img {
+    width: 100%;
+}
+.new_right{
+    flex: 1;
+
+}
+.new_name{
+    font-size: 14px;
+    color: #222;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    width:6rem;
+    margin-bottom: .28rem;
+}
+.new_date{
+    color: #999999;
+    font-size: 11px;
+}
+.nd_title{
+    font-weight: bold;
+    font-size: 18px;
+    color: #222;
+    padding: .5rem .28rem .28rem .28rem;
+}
+.nd_date{
+    color: #999;
+    font-size: 14px;
+    padding: 0 .28rem .2rem .28rem;
+}
+.nd_auth{
+    font-size: 15px;
+    color: #333;
+    padding: 0  .2rem .28rem;
+}
+.nd_content{
+    font-size: 14px;
+    line-height: .56rem;
+    text-align: justify;
+    padding: 0  .35rem;
+    color: #666;
+    text-indent: 2em;
 }

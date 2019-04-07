@@ -20,7 +20,14 @@
                 </ul>
             </dd>
         </dl>
-
+        <dl id="menu-article">
+            <dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    <li><a data-href="{:url('Article/articleList')}" data-title="资讯列表" href="javascript:void(0);">资讯列表</a></li>
+                </ul>
+            </dd>
+        </dl>
         <dl id="menu-admin">
             <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
             <dd>
@@ -73,6 +80,20 @@
             </dd>
         </dl>
         {/if}
+
+        {if in_array(strtolower('Article'),$authlist)}
+        <dl id="article">
+            <dt><i class="Hui-iconfont">&#xe616;</i> 资讯管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+            <dd>
+                <ul>
+                    {if in_array(strtolower('Article/articleList'),$authlist)}
+                    <li><a data-href="{:url('Article/articleList')}" data-title="资讯列表" href="javascript:void(0);">资讯列表</a></li>
+                    {/if}
+                </ul>
+            </dd>
+        </dl>
+        {/if}
+
         {if in_array(strtolower('Admin'),$authlist)}
         <dl id="admin">
             <dt><i class="Hui-iconfont">&#xe62d;</i> 管理员管理<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>

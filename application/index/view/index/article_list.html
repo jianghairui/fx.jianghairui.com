@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>红尾巴AI英语</title>
     <script type="text/javascript" src="/static/assets/js/fontSize.js"></script>
+    <script src="/lib/jquery.js"></script>
+    <script src="/lib/html2canvas.min.js"></script>
     <link rel="stylesheet" href="/static/assets/css/weui.min.css">
     <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
     <link rel="stylesheet" href="/static/assets/css/style.css">
@@ -21,40 +23,21 @@
 <div class="new_top">
     <div class="new_img">
         <div class="new_code"><img src="/static/assets/img/code.png" alt=""></div>
-        <div class="new_text">长按识别二维码</div>
+        <div class="new_text">长按保存图片</div>
     </div>
 </div>
 <div class="new_list">
     <div class="new_title">文章</div>
-    <a class="new_item" href="new_d.html">
-        <div class="new_imgs"><img src="/static/assets/img/ex.png" alt=""></div>
+    {foreach $list as $li}
+    <a class="new_item" href="{:url('Index/articleDetail',array('id'=>$li['id']))}">
+        <div class="new_imgs"><img src="/{$li.pic}" alt=""></div>
         <div class="new_right">
-            <div class="new_name">AI商业趋势有哪些？</div>
-            <div class="new_date">2019年3月28日</div>
+            <div class="new_name">{$li.title}</div>
+            <div class="new_date">{$li.create_time|strtotime|date='Y年m月d日 H:i'}</div>
         </div>
     </a>
-    <a class="new_item" href="new_d.html">
-        <div class="new_imgs"><img src="/static/assets/img/ex.png" alt=""></div>
-        <div class="new_right">
-            <div class="new_name">AI商业趋势的优缺点都有哪些？</div>
-            <div class="new_date">2019年3月28日</div>
-        </div>
-    </a>
-    <a class="new_item" href="new_d.html">
-        <div class="new_imgs"><img src="/static/assets/img/ex.png" alt=""></div>
-        <div class="new_right">
-            <div class="new_name">AI商业趋势的优缺点都有哪些AI商业趋势的优缺点都有哪些？</div>
-            <div class="new_date">2019年3月28日</div>
-        </div>
-    </a>
+    {/foreach}
 </div>
 </body>
 </html>
-<script type="text/javascript" src="/static/assets/js/jquery-2.1.0.js"></script>
-<script type="text/javascript" src="/static/assets/js/jquery-weui.min.js"></script>
-<script type="text/javascript" src="/static/assets/js/common.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
 
-    })
-</script>

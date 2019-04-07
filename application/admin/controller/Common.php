@@ -76,7 +76,7 @@ class Common extends Controller {
         is_dir($path) or mkdir($path,0755,true);
         //转移临时文件
         $newname = create_unique_number() . '.' . $ext;
-        move_uploaded_file($_FILES[$k]["tfx_name"], $path . "/" . $newname);
+        move_uploaded_file($_FILES[$k]["tmp_name"], $path . "/" . $newname);
         $filepath = $path . "/" . $newname;
 
         return array('error'=>0,'data'=>$filepath);
@@ -104,7 +104,7 @@ class Common extends Controller {
             is_dir($path) or mkdir($path,0755,true);
             //转移临时文件
             $newname = create_unique_number() . '.' . $ext;
-            move_uploaded_file($_FILES[$k]["tfx_name"], $path . "/" . $newname);
+            move_uploaded_file($_FILES[$k]["tmp_name"], $path . "/" . $newname);
             $arr[] = $path . "/" . $newname;
         }
         return array('error'=>0,'data'=>$arr);

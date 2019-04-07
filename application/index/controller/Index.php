@@ -324,12 +324,41 @@ class Index extends Common
         $this->assign('act',$act);
         return $this->fetch();
     }
-    //todo
+
     public function articleList() {
+        $where = [
+            ['a.status','=',1]
+        ];
+        try {
+            $list = Db::table('fx_article')->alias('a')
+                ->join("fx_admin ad","a.admin_id=ad.id","left")
+                ->field('a.*,ad.realname')
+                ->where($where)->select();
+        }catch (\Exception $e) {
+            die($e->getMessage());
+        }
+        $this->assign('list',$list);
         return $this->fetch();
     }
-    //todo
+
     public function articleDetail() {
+        $id = input('param.id');
+        $where = [
+            ['a.id','=',$id]
+        ];
+        try {
+            $info = Db::table('fx_article')->alias('a')
+                ->join("fx_admin ad","a.admin_id=ad.id","left")
+                ->field('a.*,ad.realname')
+                ->where($where)->find();
+            if(!$info) {
+                die('非法参数');
+            }
+        }catch (\Exception $e) {
+            die($e->getMessage());
+        }
+
+        $this->assign('info',$info);
         return $this->fetch();
     }
 

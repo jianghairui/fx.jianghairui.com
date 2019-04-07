@@ -71,26 +71,6 @@
                     </tbody>
                 </table>
             </div>
-            <script>
-                var int = setInterval("clock()",50);
-
-
-                function clock()
-                {
-                    document.getElementById("clock").innerHTML=show()+'<br>'
-                }
-
-                function show(){
-                    var mydate = new Date();
-                    var str = "" + mydate.getFullYear() + "年";
-                    str += (Array(2).join('0') + (mydate.getMonth() + 1)).slice(-2) + "月";
-                    str += (Array(2).join('0') + mydate.getDate()).slice(-2) + "日 ";
-                    str += (Array(2).join('0') + mydate.getHours()).slice(-2) + ":";
-                    str += (Array(2).join('0') + mydate.getMinutes()).slice(-2) + ":";
-                    str += (Array(2).join('0') + mydate.getSeconds()).slice(-2);
-                    return str;
-                }
-            </script>
         </div>
     </div>
 </section>
