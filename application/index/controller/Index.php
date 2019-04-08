@@ -338,6 +338,7 @@ class Index extends Common
             die($e->getMessage());
         }
         $this->assign('list',$list);
+        $this->assign('code',session('code'));
         return $this->fetch();
     }
 
@@ -362,11 +363,30 @@ class Index extends Common
         return $this->fetch();
     }
 
-
-
     public function qrcode() {
         include ROOT_PATH . '/extend/phpqrcode/phpqrcode.php';
-        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . session('code');
+        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . $_GET['pcode'];
+        $errorCorrectionLevel = "L"; // 纠错级别：L、M、Q、H
+        $matrixPointSize = "6"; // 点的大小：1到10
+        header('Content-Type:image/png');
+        \QRcode::png($value, false, $errorCorrectionLevel, $matrixPointSize);
+        exit;
+    }
+
+    public function mixQrcode() {
+        header('Content-Type:image/png');
+        $path_1 = 'http://' . $_SERVER['HTTP_HOST'] . '/index/index/qrcode?pcode='.$_GET['pcode'];
+        $path_2 = "static/assets/img/mix.jpg";
+        $image_1 = imagecreatefrompng($path_1);
+        $image_2 = imageresize($path_2,750,1334);
+        imagecopyresampled($image_2,$image_1,265,880,0,0,imagesx($image_1),imagesy($image_1),imagesx($image_1),imagesy($image_1));
+        imagepng($image_2);
+        exit();
+    }
+
+    public function articleQrcode() {
+        include ROOT_PATH . '/extend/phpqrcode/phpqrcode.php';
+        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/index/index/articleList?pcode=' . session('code');
         $errorCorrectionLevel = "L"; // 纠错级别：L、M、Q、H
         $matrixPointSize = "6"; // 点的大小：1到10
         header('Content-Type:image/png');
@@ -375,6 +395,7 @@ class Index extends Common
     }
 
     public function code() {
+        $this->assign('pcode',session('code'));
         return $this->fetch();
     }
 
@@ -387,47 +408,45 @@ class Index extends Common
     }
 
 
-
-
     /**
      * 1、获取微信用户信息，判断有没有code，有使用code换取access_token，没有去获取code。
      * @return array 微信用户信息数组
      */
     public function auth(){
-        if(!session('openid')) {
-            if (!isset($_GET['code'])){ //没有code，去微信接口获取code码
-                $callback = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth';//微信服务器回调url，这里是本页url http://fx.jianghairui.com/index/index/get_user_all
-                $this->get_code($callback);
-            } else {    //获取code后跳转回来到这里了
-                $code = $_GET['code'];
-                $data = $this->get_access_token($code);//获取网页授权access_token和用户openid
-                $data_all = $this->get_user_info($data['access_token'],$data['openid']);//获取微信用户信息
+        if (!isset($_GET['code'])){ //没有code，去微信接口获取code码
+            $callback = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth?act='.$_GET['act'];//微信服务器回调url，这里是本页url http://fx.jianghairui.com/index/index/get_user_all
+            $this->get_code($callback);
+        } else {    //获取code后跳转回来到这里了
+            $code = $_GET['code'];
+            $act = $_GET['act'];
+            $data = $this->get_access_token($code);//获取网页授权access_token和用户openid
+            $data_all = $this->get_user_info($data['access_token'],$data['openid']);//获取微信用户信息
 
-                /*保存用户信息到数据库并设置session*/
-                $insert_data = [
-                    'openid' => $data_all['openid'],
-                    'nickname' => $data_all['nickname'],
-                    'avatar' => $data_all['headimgurl']
-                ];
-                $user_exist = Db::table('fx_user')->where('openid',$data_all['openid'])->find();
-                try {
-                    if($user_exist) {
-                        Db::table('fx_user')->where('openid',$data_all['openid'])->update($insert_data);
-                    }else {
-                        $insert_data['code'] = time();
-                        $insert_data['create_time'] = time();
-                        Db::table('fx_user')->insert($insert_data);
-                    }
-                }catch (\Exception $e) {
-                    die('系统错误,请联系管理员 :' . $e->getMessage());
+            /*保存用户信息到数据库并设置session*/
+            $insert_data = [
+                'openid' => $data_all['openid'],
+                'nickname' => $data_all['nickname'],
+                'avatar' => $data_all['headimgurl']
+            ];
+            $user_exist = Db::table('fx_user')->where('openid',$data_all['openid'])->find();
+            try {
+                if($user_exist) {
+                    Db::table('fx_user')->where('openid',$data_all['openid'])->update($insert_data);
+                }else {
+                    $insert_data['code'] = time();
+                    $insert_data['create_time'] = time();
+                    Db::table('fx_user')->insert($insert_data);
                 }
-
-                session('openid',$data_all['openid']);
-//                session('nickname',$data_all['nickname']);
-//                session('avatar',$data_all['headimgurl']);
+            }catch (\Exception $e) {
+                die('系统错误,请联系管理员 :' . $e->getMessage());
             }
+            session('openid',$data_all['openid']);
         }
-        $url = 'http://'.$_SERVER['HTTP_HOST'] . '/home';
+        if($act == 'auth') {
+            $url = 'http://'.$_SERVER['HTTP_HOST'] . '/home';
+        }else {
+            $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/articleList';
+        }
         header("Location:".$url);exit;
 
     }

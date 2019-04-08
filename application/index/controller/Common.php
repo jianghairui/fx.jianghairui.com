@@ -27,9 +27,12 @@ class Common extends Controller {
 
         $allow = [
             'Index/auth',
-            'Index/frozen'
+            'Index/frozen',
+            'Index/qrcode',
+            'Index/articleqrcode',
+            'Index/mixqrcode',
         ];
-
+//        $full_url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $param = input('param.');
         if(isset($param['pcode'])) {
             session('pcode',$param['pcode']);
@@ -37,7 +40,11 @@ class Common extends Controller {
 
         if(!in_array($cmd,$allow)) {
             if(!session('openid')) {
-                $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth';
+                if($cmd == 'Index/articlelist') {
+                    $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth?act=art';
+                }else {
+                    $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth?act=auth';
+                }
                 header("Location:".$url);exit;
             }else {
                 $user = Db::table('fx_user')->where('openid',session('openid'))->find();

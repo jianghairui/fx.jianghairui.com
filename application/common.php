@@ -251,3 +251,34 @@ function randColor($image) {
 function mredis($config = []) {
     return \my\MyRedis::getInstance($config);
 }
+
+function imageresize($filename,$newwidth,$newheight){
+
+    if(!empty($filename) && file_exists($filename)){
+        list($width, $height) = getimagesize($filename);
+        $thumb = imagecreatetruecolor($newwidth, $newheight);
+
+        $suffix = strrchr($filename,'.');
+        switch($suffix){
+            case '.gif':
+                $source = imagecreatefromgif($filename);
+                imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+                break;
+            case '.png':
+                $source = imagecreatefrompng($filename);
+                imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+                break;
+            case '.jpg':
+                $source = imagecreatefromjpeg($filename);
+                imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+                break;
+            case '.bmp':
+                $source = imagecreatefromwbmp($filename);
+                imagecopyresized($thumb, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+                break;
+        }
+        return $thumb;
+    }else {
+        die('INVALID IMAGE');
+    }
+}

@@ -11,19 +11,13 @@
     <link rel="stylesheet" href="/static/assets/css/jquery-weui.min.css">
     <link rel="stylesheet" href="/static/assets/css/style.css?123">
     <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
+    <style>
+        html,body{
+            width: 100%;height: 100%;
+        }
+    </style>
 </head>
-<body class="codes_box">
-<div class="img_code_box">
-    <img src="{:url('Index/qrcode')}" alt="">
-    <span>扫一扫上方二维码</span>
-</div>
+<body>
+<img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/index/index/mixQrcode?pcode='.$pcode;?>" alt="" style="width: 100%">
 </body>
 </html>
-<script src="/static/assets/js/jquery-2.1.0.js"></script>
-<!--<script src="//cdn.bootcss.com/jquery/1.11.0/jquery.min.js"></script>-->
-<script src="/static/assets/js/jquery-weui.min.js"></script>
-<script src="/static/assets/js/common.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
-    })
-</script>

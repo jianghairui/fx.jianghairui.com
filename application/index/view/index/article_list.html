@@ -11,7 +11,7 @@
     <script src="/lib/html2canvas.min.js"></script>
     <link rel="stylesheet" href="/static/assets/css/weui.min.css">
     <link rel="stylesheet" href="/static/assets/fonts/iconfont.css">
-    <link rel="stylesheet" href="/static/assets/css/style.css">
+    <link rel="stylesheet" href="/static/assets/css/style.css?1">
     <style>
         body{
             min-height: 100vh;
@@ -20,14 +20,15 @@
     </style>
 </head>
 <body>
-<div class="new_top">
-    <div class="new_img">
-        <div class="new_code"><img src="/static/assets/img/code.png" alt=""></div>
-        <div class="new_text">长按保存图片</div>
-    </div>
+{if $code}
+<div class="new_top" style="background-image: url('/static/assets/img/order.png');background-size: 100% 100%">
+    <img src="{:url('Index/articleQrcode')}" alt="">
+    <div style="color:#ffffff">长按分享二维码</div>
 </div>
+{/if}
+
 <div class="new_list">
-    <div class="new_title">文章</div>
+    <div class="new_title">文章<a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/home';?>" style="position: absolute;right:15px;">&gt;&gt;首页</a></div>
     {foreach $list as $li}
     <a class="new_item" href="{:url('Index/articleDetail',array('id'=>$li['id']))}">
         <div class="new_imgs"><img src="/{$li.pic}" alt=""></div>
