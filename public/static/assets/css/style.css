@@ -166,7 +166,6 @@ a {
     flex: 1;
     padding: 15px 0;
     text-align: right;
-
 }
 
 .ache_box .order_input {
@@ -185,7 +184,7 @@ a {
 
 .order_input input {
     text-align: right;
-    font-size: 0.26rem;
+    font-size: 0.3rem;
     width: 100%;
     height: 100%;
 }
