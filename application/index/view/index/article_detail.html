@@ -14,11 +14,13 @@
 <body>
 <div class="nd_title">{$info.title}</div>
 <div class="nd_date">{$info.create_time|strtotime|date='Y年m月d日 H:i'}</div>
-<div class="nd_auth">{$info.realname}</div>
+<div class="nd_auth">作者: {$info.realname}</div>
+
 <style>
     p img {width: 100% !important;}
     p video {width: 100% !important;}
 </style>
-<div style="width: 100%;"><?php echo $info['content'];?></div>
+
+<div style="width: 96%;margin-left: 2%"><?php echo $info['content'];?></div>
 </body>
 </html>
