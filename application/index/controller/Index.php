@@ -365,7 +365,9 @@ class Index extends Common
 
     public function qrcode() {
         include ROOT_PATH . '/extend/phpqrcode/phpqrcode.php';
-        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . $_GET['pcode'];
+//        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . $_GET['pcode'];
+        $value = 'http://' . $_SERVER['HTTP_HOST'] . '/index/index/qrcode?pcode='.$_GET['pcode'];
+
         $errorCorrectionLevel = "L"; // 纠错级别：L、M、Q、H
         $matrixPointSize = "6"; // 点的大小：1到10
         header('Content-Type:image/png');
@@ -375,7 +377,8 @@ class Index extends Common
 
     public function mixQrcode() {
         header('Content-Type:image/png');
-        $path_1 = 'http://' . $_SERVER['HTTP_HOST'] . '/index/index/qrcode?pcode='.$_GET['pcode'];
+//        $path_1 = 'http://' . $_SERVER['HTTP_HOST'] . '/index/index/qrcode?pcode='.$_GET['pcode'];
+        $path_1= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . $_GET['pcode'];
         $path_2 = "static/assets/img/mix.jpg";
         $image_1 = imagecreatefrompng($path_1);
         $image_2 = imageresize($path_2,750,1334);
