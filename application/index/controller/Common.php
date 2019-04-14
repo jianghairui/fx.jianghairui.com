@@ -41,7 +41,7 @@ class Common extends Controller {
         if(!in_array($cmd,$allow)) {
             if(!session('openid')) {
                 if($cmd == 'Index/articlelist') {
-                    $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth?act=art';
+                    $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth?act=articlelist';
                 }else {
                     $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/auth?act=auth';
                 }

@@ -338,7 +338,6 @@ class Index extends Common
             die($e->getMessage());
         }
         $this->assign('list',$list);
-        $this->assign('code',session('code'));
         return $this->fetch();
     }
 
@@ -389,7 +388,14 @@ class Index extends Common
 
     public function articleQrcode() {
         include ROOT_PATH . '/extend/phpqrcode/phpqrcode.php';
-        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . session('code');
+        if(session('pcode')) {
+            $pcode = session('pcode');
+        }else {
+            $openid = session('openid');
+            $user = Db::table('fx_user')->where('openid',$openid)->find();
+            $pcode = $user['pcode'];
+        }
+        $value= 'http://' . $_SERVER['HTTP_HOST'] . '/home?pcode=' . $pcode;
         $errorCorrectionLevel = "L"; // 纠错级别：L、M、Q、H
         $matrixPointSize = "6"; // 点的大小：1到10
         header('Content-Type:image/png');
@@ -445,10 +451,10 @@ class Index extends Common
             }
             session('openid',$data_all['openid']);
         }
-        if($act == 'auth') {
-            $url = 'http://'.$_SERVER['HTTP_HOST'] . '/home';
+        if($act == 'articlelist') {
+            $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/articlelist';
         }else {
-            $url = 'http://'.$_SERVER['HTTP_HOST'] . '/index/index/articleList';
+            $url = 'http://'.$_SERVER['HTTP_HOST'] . '/home';
         }
         header("Location:".$url);exit;
 
